@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { ITodos } from '../../model/ITodoList';
+import { useTodoState } from '../../pages/Main/TodoContext';
 
 const TodoHeadBlock = styled.div`
   padding-top: 48px;
@@ -25,11 +27,22 @@ const TodoHeadBlock = styled.div`
 `;
 
 function TodoHead() {
+  const todos: ITodos = useTodoState();
+  const undoneCount = todos.filter(todo => !todo.done).length;
+  
+  const today = new Date();
+  const dateString = today.toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+  const dayName = today.toLocaleDateString('ko-KR', { weekday: 'long'});
+
   return (
     <TodoHeadBlock>
-      <h1>2021년 7월 20일</h1>
-      <div className="day">수요일</div>
-      <div className="tasks-left">할 일 2개 남음</div>
+      <h1>{dateString}</h1>
+      <div className="day">{dayName}</div>
+      <div className="tasks-left">할 일 {undoneCount}개 남음</div>
     </TodoHeadBlock>
   );
 }
